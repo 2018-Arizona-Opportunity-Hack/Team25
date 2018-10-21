@@ -1,0 +1,281 @@
+<html>
+<head>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css">
+	</head>
+<body>
+	<div class="navbar"></div>
+	<div class="sidebar">
+		<div id="1" class="questiontype draggable">Single Choice Question</div>
+		<div id="2" class="questiontype draggable">Rating Question</div>
+		<div id="3" class="questiontype draggable">Multiple Choice Questions</div>
+		<div id="4" class="questiontype draggable">Open Ended Questions</div>
+	</div>
+	<div id="droppable" class="workspace">
+		<ul id="sortable" class="questions">
+		  
+		</ul>
+	</div>
+</body>
+
+<div class="questiondialog">
+	<div class="navbar">
+		<span id="qtypetext">Question Type</span>
+		<select id="selqtype"> 
+			<option value="1">Radio Question</option>
+			<option value="2">Rating Question</option>
+			<option value="3">Multiple Choice Questions</option>
+			<option value="4">Open Ended Questions</option>
+		</select>
+		<div class="closeqdlg">x</div>
+	</div>
+	<div>
+		<textarea id="qtext" style="width:100%;" rows=4>Enter question text here</textarea>
+		<div id="radiooptionspace" style="display: none;">
+			<div><input type="text" value="option 1"/><div id="addradrow" class="addradrow btn" onclick='addradrow(this)'>+</div><div id="delradrow" class="btn" onclick="delradrow(this)">-</div></div>
+			<div><input type="text" value="option 2"/><div id="addradrow" class="addradrow btn" onclick='addradrow(this)'>+</div><div id="delradrow" class="btn" onclick="delradrow(this)">-</div></div>
+			<div><input type="text" value="option 3"/><div id="addradrow" class="addradrow btn" onclick='addradrow(this)'>+</div><div id="delradrow" class="btn" onclick="delradrow(this)">-</div></div>
+
+			<br>
+			<div class="btn" onclick="appendQuestion(1)">add</div>
+		</div>
+
+		<div id="sliderspace">
+			<div id="dummyslider"></div>
+			<div id="custom-handle" class="ui-slider-handle"></div>
+			<div class="btn" onclick="appendQuestion(2)">add</div>
+		</div>
+
+		<div id="multiplechoicespace">
+			<div><input type="text" value="option 1"/><div id="addradrow" class="addradrow btn" onclick='addradrow(this)'>+</div><div id="delradrow" class="btn" onclick="delradrow(this)">-</div></div>
+			<div><input type="text" value="option 2"/><div id="addradrow" class="addradrow btn" onclick='addradrow(this)'>+</div><div id="delradrow" class="btn" onclick="delradrow(this)">-</div></div>
+			<div><input type="text" value="option 3"/><div id="addradrow" class="addradrow btn" onclick='addradrow(this)'>+</div><div id="delradrow" class="btn" onclick="delradrow(this)">-</div></div>
+
+			<br>
+			<div class="btn" onclick="appendQuestion(3)">add</div>
+		</div>
+
+		<div id="openendedspace">
+			<div class="btn" onclick="appendQuestion(4)">add</div>
+		</div>
+	</div>
+</div>
+</html>
+
+<style>
+	body{
+		margin: 0px;
+	}
+
+	.navbar{
+		width: 100%;
+		height: 50px;
+		background: #bbb;
+		border-bottom: solid 1px;
+		padding: 5px;
+	}
+
+	.sidebar{
+		width: 20%;
+		height: 100%;
+		float: left;
+		display: inline-block;
+		padding: 5px;
+		border-right: solid 1px;
+	}
+
+	.workspace{
+		height: 100%;
+		padding: 7px;
+		background: beige;
+		width: 78%;
+		float: right;
+
+	}
+
+	.questiontype{
+		width: 95%;
+		padding: 5px;
+		margin-bottom: 10px;
+		height: 30px;
+		border: solid 1px;
+		border-radius: 3px;
+		cursor: e-resize;
+	}
+
+	.questiondialog{
+		width: 700px;
+		height: 500px;
+		border: solid 1px;
+		border-radius: 4px;
+		position: fixed;
+		left: 500px;
+		top: 200px;
+		overflow: hidden;
+		display: none;
+		background: white;
+	}
+
+	.questiondialog .navbar{
+		background: black;
+		width: 99%;
+		cursor: all-scroll;
+		color: white;
+		font-size: 20px;
+	}
+
+	.closeqdlg{
+		font-size: 30px;
+	    float: right;
+	    padding: 5px;
+	    border: solid 1px;
+    	border-radius: 5px;
+	}
+
+	.btn{
+		width: 20px;
+		height: 20px;
+		border: solid 1px;
+		background: black;
+		color: white;
+		display: inline-block;
+	}
+
+	#qtext{
+		font-size: 20px;
+	}
+	.qtext{
+		font-size: 20px;
+	}
+	#dummyslider{
+		width: 70%;
+    	margin: 50px auto;
+	}
+	#custom-handle {
+		text-align: center;
+		font-size: 40px;
+	}
+	li{
+		margin-bottom: 20px;
+	}
+</style>
+
+<script>
+	jQuery(".draggable").draggable({
+	  start: function(event, ui) {
+	    // flag to indicate that we want to remove element on drag stop
+	    //ui.helper.removeMe = true;
+	  },
+	  stop: function(event, ui) {
+	    // remove draggable if flag is still true
+	    // which means it wasn't unset on drop into parent
+	    // so dragging stopped outside of parent
+	    // if (ui.helper.removeMe) {
+	    //   ui.helper.remove();
+	    // }
+	  },
+	  // move back if dropped into a droppable
+	  revert: 'valid'
+	});
+
+	jQuery("#droppable").droppable({
+	  drop: function(event, ui) {
+	    // unset removeMe flag as child is still inside parent
+	    //ui.helper.removeMe = false;
+	    if(jQuery(ui.draggable[0]).is('.questiontype')){
+	    	addQuestion(ui.draggable[0].id);
+	    }
+	    
+	  }
+	});
+
+	function addQuestion(type){
+		console.log("Adding question of type", type);
+		jQuery(".questiondialog").show();
+		jQuery("#selqtype").val(type);
+
+		jQuery("#radiooptionspace").css("display", "none");
+		jQuery("#sliderspace").css("display", "none");
+		jQuery("#multiplechoicespace").css("display", "none");
+		jQuery("#openendedspace").css("display", "none");
+
+		if(type == "1"){
+			jQuery("#radiooptionspace").css("display", "block");
+		}else if(type == "2"){
+			jQuery("#sliderspace").css("display", "block");
+			var handle = jQuery( "#custom-handle" );
+			jQuery("#dummyslider").slider({
+			      value:1,
+			      min: 0,
+			      max: 10,
+			      step: 1,
+				create: function() {
+					handle.text( jQuery( this ).slider( "value" )+" / 10" );
+				},
+				slide: function( event, ui ) {
+					handle.text( ui.value + " / 10" );
+				}});
+		}else if(type == "3"){
+			jQuery("#multiplechoicespace").css("display", "block");
+		}else if(type == "4"){
+			jQuery("#openendedspace").css("display", "block");
+		}
+
+	}
+	function addradrow(ele){
+		jQuery(ele).parent().after("<div><input type='text' value='enter new option '/><div id='addradrow' class='addradrow btn' onclick=addradrow(this)>+</div><div id='delradrow' class='btn' onclick='delradrow(this)'>-</div></div>")
+	}
+	function delradrow(ele){
+		jQuery(ele).parent().remove();
+	}
+	qctr = 0;
+	function appendQuestion(type){
+		elem = '<div class="qtext" id="q'+qctr+'">'+jQuery('#qtext').val()+'</div>'
+		
+		if(type == 1){
+			select = '';
+			opts = jQuery('#radiooptionspace').find("input");
+			jQuery.each(opts, function(k, v){
+				select += '<input type="radio" name="r'+qctr+'" value="'+jQuery(v).val()+'">'+jQuery(v).val()+'</input>';
+			});
+			elem += select;
+			jQuery('.questions').append('<li>'+elem+'</li>');
+		}else if(type == 2){
+			select = '<div id="slider'+qctr+'" style="width:50%;"></div>';
+			select += '<div id="custom-handle'+qctr+'" style="width:50%;"></div>';
+			elem += select;
+			jQuery('.questions').append('<li>'+elem+'</li>');
+			var handle = jQuery( "#custom-handle"+qctr );
+			jQuery("#slider"+qctr).slider({
+			      value:1,
+			      min: 0,
+			      max: 10,
+			      step: 1,
+				create: function() {
+					handle.text( jQuery( this ).slider( "value" )+" / 10" );
+				},
+				slide: function( event, ui ) {
+					handle.text( ui.value + " / 10" );
+				}});
+		}else if(type == 3){
+			select = '';
+			opts = jQuery('#multiplechoicespace').find("input");
+			jQuery.each(opts, function(k, v){
+				select += '<input type="checkbox" name="c'+qctr+'" value="'+jQuery(v).val()+'">'+jQuery(v).val()+'</input>';
+			});
+			elem += select;
+			jQuery('.questions').append('<li>'+elem+'</li>');
+		}else if(type == 4){
+			select = '<textarea style="width:100%;" rows=4></textarea>';
+			elem += select;
+			jQuery('.questions').append('<li>'+elem+'</li>');
+		}
+		qctr+=1;
+		
+		jQuery(".questiondialog").hide();
+	}
+	jQuery( "#sortable" ).sortable();
+    jQuery( "#sortable" ).disableSelection();
+    jQuery( ".questiondialog" ).draggable();
+</script>
