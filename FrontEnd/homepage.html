@@ -11,6 +11,7 @@
 				<div class="tabitem active">Surveys</div>
 				<div class="tabitem">Users</div>
 				<div class="tabitem">Reports</div>
+				<div class="tabitem" onclick="exportcsv()">Export</div>
 			</div>
 		</div>
 		<div><iframe src="./listview.html" width="100%"" height="100%"></iframe></div>
@@ -19,7 +20,9 @@
 </html>
 
 <script type="text/javascript">
-
+	function exportcsv(){
+		window.location.href = "http://10.2.23.238:1337/export";
+	}
 </script>
 <style type="text/css">
 	body{
