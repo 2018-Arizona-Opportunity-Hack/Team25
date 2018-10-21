@@ -13,9 +13,13 @@
 		<div id="4" class="questiontype draggable">Open Ended Questions</div>
 	</div>
 	<div id="droppable" class="workspace">
+		<div><input id="surveyname" type="text" name="sname" value="New Survey"/></div>
 		<ul id="sortable" class="questions">
 		  
 		</ul>
+		<div id="formfooter">
+			<div class="btn" onclick=validateandsubmit()>Save</div>
+		</div>
 	</div>
 </body>
 
@@ -28,7 +32,7 @@
 			<option value="3">Multiple Choice Questions</option>
 			<option value="4">Open Ended Questions</option>
 		</select>
-		<div class="closeqdlg">x</div>
+		<div class="closeqdlg" onclick="closedialog()">x</div>
 	</div>
 	<div>
 		<textarea id="qtext" style="width:100%;" rows=4>Enter question text here</textarea>
@@ -78,7 +82,7 @@
 
 	.sidebar{
 		width: 20%;
-		height: 100%;
+		height: 98%;
 		float: left;
 		display: inline-block;
 		padding: 5px;
@@ -86,12 +90,12 @@
 	}
 
 	.workspace{
-		height: 100%;
+		height: 98%;
 		padding: 7px;
 		background: beige;
 		width: 78%;
 		float: right;
-
+		overflow: scroll;
 	}
 
 	.questiontype{
@@ -140,6 +144,7 @@
 		background: black;
 		color: white;
 		display: inline-block;
+		cursor: pointer;
 	}
 
 	#qtext{
@@ -158,6 +163,20 @@
 	}
 	li{
 		margin-bottom: 20px;
+	}
+
+	#surveyname{
+		font-size: 30px;
+	}
+
+	#formfooter{
+		width: 77%;
+	    height: 50px;
+	    background: black;
+	    position: fixed;
+	    bottom: 10px;
+	    padding: 5px;
+	    color: white;
 	}
 </style>
 
@@ -231,7 +250,7 @@
 	}
 	qctr = 0;
 	function appendQuestion(type){
-		elem = '<div class="qtext" id="q'+qctr+'">'+jQuery('#qtext').val()+'</div>'
+		elem = '<div class="qtext" id="q'+qctr+'" type="'+type+'">'+jQuery('#qtext').val()+'</div>'
 		
 		if(type == 1){
 			select = '';
@@ -275,7 +294,42 @@
 		
 		jQuery(".questiondialog").hide();
 	}
+	function closedialog(){
+		jQuery(".questiondialog").hide();
+	}
 	jQuery( "#sortable" ).sortable();
     jQuery( "#sortable" ).disableSelection();
     jQuery( ".questiondialog" ).draggable();
+
+
+    function validateandsubmit(){
+    	var survey = {}
+    	var name = jQuery("#surveyname").val();
+    	var questions = [];
+    	qs = jQuery(".questions li");
+    	jQuery.each(qs, function(k, v){
+    		item = jQuery(v);
+    		var question = {};
+    		question.text = item.find(".qtext").text();
+    		question.type = item.find(".qtext").attr("type");
+    		question.options = [];
+    		var opts = undefined;
+    		if(question.type == 1){
+    			opts = item.find("input[type=radio]");
+    		}else if(question.type == 3){
+    			opts = item.find("input[type=checkbox]");
+    		}
+    		jQuery.each(opts, function(k, v){
+				var options = {};
+				options.position = k;
+				options.text = jQuery(v).val();
+				question.options.push(options);
+			});
+    		question.position = k;
+    		questions.push(question);
+    	});
+    	survey.name = name;
+    	survey.questions = questions;
+    	console.log(survey);
+    }
 </script>
