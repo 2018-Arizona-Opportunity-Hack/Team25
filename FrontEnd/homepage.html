@@ -34,7 +34,7 @@
 		</select>
 		<div class="closeqdlg" onclick="closedialog()">x</div>
 	</div>
-	<div style="padding: 10px;">
+	<div style="padding: 10px; height: 320px; overflow: scroll;">
 		<textarea id="qtext" style="width:100%;" rows=4>Enter question text here</textarea>
 		<div id="radiooptionspace" style="display: none;">
 			<div><input type="text" value="option 1"/><div id="addradrow" class="addradrow btn small" onclick='addradrow(this)'>+</div><div id="delradrow" class="btn small" onclick="delradrow(this)">-</div></div>
@@ -52,9 +52,9 @@
 		</div>
 
 		<div id="multiplechoicespace">
-			<div><input type="text" value="option 1"/><div id="addradrow" class="addradrow btn" onclick='addradrow(this)'>+</div><div id="delradrow" class="btn" onclick="delradrow(this)">-</div></div>
-			<div><input type="text" value="option 2"/><div id="addradrow" class="addradrow btn" onclick='addradrow(this)'>+</div><div id="delradrow" class="btn" onclick="delradrow(this)">-</div></div>
-			<div><input type="text" value="option 3"/><div id="addradrow" class="addradrow btn" onclick='addradrow(this)'>+</div><div id="delradrow" class="btn" onclick="delradrow(this)">-</div></div>
+			<div><input type="text" value="option 1"/><div id="addradrow" class="addradrow btn small" onclick='addradrow(this)'>+</div><div id="delradrow" class="btn small" onclick="delradrow(this)">-</div></div>
+			<div><input type="text" value="option 2"/><div id="addradrow" class="addradrow btn small" onclick='addradrow(this)'>+</div><div id="delradrow" class="btn small" onclick="delradrow(this)">-</div></div>
+			<div><input type="text" value="option 3"/><div id="addradrow" class="addradrow btn small" onclick='addradrow(this)'>+</div><div id="delradrow" class="btn small" onclick="delradrow(this)">-</div></div>
 
 			<br>
 			<div class="btn" onclick="appendQuestion(3)">add</div>
@@ -108,8 +108,8 @@
 	}
 
 	.questiondialog{
-		width: 700px;
-		height: 500px;
+		width: 600px;
+		height: 400px;
 		border: solid 1px;
 		border-radius: 4px;
 		position: fixed;
@@ -157,8 +157,8 @@
 	}
 
 	.btn.small{
-		width: 0px;
-	    height: 0px;
+		width: 10px;
+	    height: 10px;
 	    padding: 10px;
 	    margin: 5px;
 	}
@@ -192,6 +192,13 @@
 		width: 700px;
 	}
 
+	input{
+		border: none;
+	    border-bottom: 2px solid;
+	    padding: 5px;
+	    font-size: 15px;
+	}
+
 	#surveyname{
 		font-size: 30px;
 	    border: none;
@@ -218,8 +225,8 @@
 	}
 
 	#optitem{
-		display: block;
-		width: 100px;
+		display: inline-block;
+    	width: 200px;
 		padding: 5px;
 		margin: 5px;
 	}
@@ -236,6 +243,12 @@
 	#selqtype{
 		margin-left: 30px;
     	font-size: 15px;
+	}
+
+	#openendedspace, #radiooptionspace, #sliderspace, #multiplechoicespace{
+	    padding: 10px;
+	    text-align: center;
+	    overflow: scroll;
 	}
 </style>
 
@@ -320,8 +333,8 @@
 			elem += select;
 			jQuery('.questions').append('<li id="qitem">'+elem+'</li>');
 		}else if(type == 2){
-			select = '<div id="slider'+qctr+'" style="width:50%;"></div>';
-			select += '<div id="custom-handle'+qctr+'" style="width:50%;"></div>';
+			select = '<div id="slider'+qctr+'" style="width:50%;margin:auto;"></div>';
+			select += '<div id="custom-handle'+qctr+'" style="width:50%;margin:auto;"></div>';
 			elem += select;
 			jQuery('.questions').append('<li id="qitem">'+elem+'</li>');
 			var handle = jQuery( "#custom-handle"+qctr );
