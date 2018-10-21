@@ -8,7 +8,7 @@ def return_choice(img, no_of_options = 4, direction = "horizontal"):
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     # In case image not detected
     # img = cv2.GaussianBlur(img,(10,10),0)
-    cv2.imshow('img',img)
+    # cv2.imshow('img',img)
     ret,thresh = cv2.threshold(gray,160,200,1)
     # Direction ( horizontal = 0 && vertical = 1)
     # direction = 0
