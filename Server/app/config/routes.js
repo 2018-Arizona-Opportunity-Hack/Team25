@@ -61,6 +61,7 @@ module.exports.routes = {
 
   // Impex
   'GET /export': 'ImpexController.export',
+  'POST /import': 'ImpexController.import',
 
 
   //  ╦ ╦╔═╗╔╗ ╦ ╦╔═╗╔═╗╦╔═╔═╗
