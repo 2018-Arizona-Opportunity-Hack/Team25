@@ -9,6 +9,8 @@
     "@sailshq/lodash": "^3.10.3",
     "@sailshq/socket.io-redis": "^5.2.0",
     "async": "2.0.1",
+    "csvtojson": "^2.0.8",
+    "json2csv": "^4.2.1",
     "ramda": "^0.25.0",
     "sails": "^1.0.2",
     "sails-hook-apianalytics": "^2.0.0",

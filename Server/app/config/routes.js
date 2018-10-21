@@ -59,6 +59,9 @@ module.exports.routes = {
   // Responses
   'POST /dumpResponses': 'ResponseController.dumpResponses',
 
+  // Impex
+  'GET /export': 'ImpexController.export',
+
 
   //  ╦ ╦╔═╗╔╗ ╦ ╦╔═╗╔═╗╦╔═╔═╗
   //  ║║║║╣ ╠╩╗╠═╣║ ║║ ║╠╩╗╚═╗
