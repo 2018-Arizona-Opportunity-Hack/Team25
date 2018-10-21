@@ -2,16 +2,17 @@ import numpy as np
 import cv2
 import math
 
-
 def return_choice(img, no_of_options = 4, direction = "horizontal"):
+    
     # Convert to Greyscale
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    
     # In case image not detected
     # img = cv2.GaussianBlur(img,(10,10),0)
     # cv2.imshow('img',img)
+    
     ret,thresh = cv2.threshold(gray,160,200,1)
-    # Direction ( horizontal = 0 && vertical = 1)
-    # direction = 0
+    
     # Find contours in image
     contours,h = cv2.findContours(thresh,1,2)
     rect_list = [] # List of rectangles
@@ -36,7 +37,8 @@ def return_choice(img, no_of_options = 4, direction = "horizontal"):
     if(len(cent_list) > no_of_options + 1):
         print("FLAGGED")
         return 0
-
+    
+    # Direction ( horizontal = 0 && vertical = 1)
     if direction == "horizontal":
         dir = 0
     else:
@@ -44,7 +46,8 @@ def return_choice(img, no_of_options = 4, direction = "horizontal"):
 
     cent_list.sort(key=lambda x: x[dir]) # sort according to direction of options
     # print(cent_list)
-    euc_distance = []
+    
+    euc_distance = [] 
     # find euclidean distance between centres
     for i in range(len(cent_list)-1):
         a = pow(cent_list[i+1][0] - cent_list[i][0], 2) 
