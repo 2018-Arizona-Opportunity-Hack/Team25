@@ -1,8 +1,8 @@
 
 /**
- * ResponseController
+ * QuestionController
  *
- * @description :: Server-side logic for managing Response
+ * @description :: Server-side logic for managing Question
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
@@ -28,35 +28,35 @@ const dumpToDB = async (data, collection) => {
 };
 
 module.exports = {
-  dumpResponses: async function (req, res) {
-    const sampleResponse = [
+  dumpQuestions: async function (req, res) {
+    const sampleQuestion = [
       'surveyId',
       'clientId',
       'questionText',
-      'response',
+      'Question',
       'questionType',
-      'responseId',
+      'QuestionId',
       'rawData'
     ];
-    const data = req.body.responses;
+    const data = req.body.Questions;
     const config = req.body.config;
-    // const data = R.uniq(responses);
+    // const data = R.uniq(Questions);
     const isAttrType = R.propEq("type", "attribute");
     const attrs = R.pipe(
       R.filter(isAttrType),
-      R.map(x => ({[x["attribute"]]: x["response"]})),
+      R.map(x => ({[x["attribute"]]: x["Question"]})),
       R.mergeAll
     )(data);
 
     const final = R.pipe(
       R.reject(isAttrType),
-      R.map(x => ({[x["metric"]]: x["response"]})),
+      R.map(x => ({[x["metric"]]: x["Question"]})),
       // R.mergeAll,
       R.map(R.merge(attrs)),
       R.map(R.merge(config))
     )(data);
       
-    const result = await dumpToDB(final, Response);
+    const result = await dumpToDB(final, Survey);
     // const final = R.map(attr => R.merge(attr, metrics), attrs)[0];
     return res.json(result);
   },
