@@ -49,7 +49,7 @@ module.exports.datastores = {
     *                                                                          *
     ***************************************************************************/
     adapter: 'sails-mongo',
-    url: 'mongodb://127.0.0.1:27017/hackdb',
+    url: 'mongodb://hacker001:test321@ds050087.mlab.com:50087/opphack',
 
   },
 
