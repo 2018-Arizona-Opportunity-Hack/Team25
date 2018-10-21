@@ -21,7 +21,7 @@
 		pass = jQuery('[name=password]').val();
 		console.log("im here", user, pass);
 		if(user === "admin" && pass === "admin"){
-			window.location.herf = '/homepage';
+			window.location.href = './homepage.html';
 		}else{
 			jQuery('#error')[0].innerHTML = "Invalid Credentials"; //DO I18N
 		}
