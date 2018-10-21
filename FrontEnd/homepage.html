@@ -13,7 +13,7 @@
 		<div id="4" class="questiontype draggable">Open Ended Questions</div>
 	</div>
 	<div id="droppable" class="workspace">
-		<div><input id="surveyname" type="text" name="sname" value="New Survey"/></div>
+		<div style="border-bottom: solid 1px; padding-bottom: 10px;">Name Of Survey: <input id="surveyname" type="text" name="sname" value="New Survey"/></div>
 		<ul id="sortable" class="questions">
 		  
 		</ul>
@@ -25,7 +25,7 @@
 
 <div class="questiondialog">
 	<div class="navbar">
-		<span id="qtypetext">Question Type</span>
+		<span id="qtypetext">Add New Question</span>
 		<select id="selqtype"> 
 			<option value="1">Radio Question</option>
 			<option value="2">Rating Question</option>
@@ -34,12 +34,12 @@
 		</select>
 		<div class="closeqdlg" onclick="closedialog()">x</div>
 	</div>
-	<div>
+	<div style="padding: 10px;">
 		<textarea id="qtext" style="width:100%;" rows=4>Enter question text here</textarea>
 		<div id="radiooptionspace" style="display: none;">
-			<div><input type="text" value="option 1"/><div id="addradrow" class="addradrow btn" onclick='addradrow(this)'>+</div><div id="delradrow" class="btn" onclick="delradrow(this)">-</div></div>
-			<div><input type="text" value="option 2"/><div id="addradrow" class="addradrow btn" onclick='addradrow(this)'>+</div><div id="delradrow" class="btn" onclick="delradrow(this)">-</div></div>
-			<div><input type="text" value="option 3"/><div id="addradrow" class="addradrow btn" onclick='addradrow(this)'>+</div><div id="delradrow" class="btn" onclick="delradrow(this)">-</div></div>
+			<div><input type="text" value="option 1"/><div id="addradrow" class="addradrow btn small" onclick='addradrow(this)'>+</div><div id="delradrow" class="btn small" onclick="delradrow(this)">-</div></div>
+			<div><input type="text" value="option 2"/><div id="addradrow" class="addradrow btn small" onclick='addradrow(this)'>+</div><div id="delradrow" class="btn small" onclick="delradrow(this)">-</div></div>
+			<div><input type="text" value="option 3"/><div id="addradrow" class="addradrow btn small" onclick='addradrow(this)'>+</div><div id="delradrow" class="btn small" onclick="delradrow(this)">-</div></div>
 
 			<br>
 			<div class="btn" onclick="appendQuestion(1)">add</div>
@@ -74,7 +74,6 @@
 
 	.navbar{
 		width: 100%;
-		height: 50px;
 		background: #bbb;
 		border-bottom: solid 1px;
 		padding: 5px;
@@ -92,7 +91,7 @@
 	.workspace{
 		height: 98%;
 		padding: 7px;
-		background: beige;
+		background: white;
 		width: 78%;
 		float: right;
 		overflow: scroll;
@@ -127,46 +126,77 @@
 		cursor: all-scroll;
 		color: white;
 		font-size: 20px;
+		padding: 15px;
 	}
 
 	.closeqdlg{
-		font-size: 30px;
+		font-size: 20px;
 	    float: right;
-	    padding: 5px;
 	    border: solid 1px;
-    	border-radius: 5px;
+	    border-radius: 15px;
+	    margin-right: 15px;
+	    width: 25px;
+	    height: 25px;
+	    text-align: center;
+	    cursor: pointer;
 	}
 
 	.btn{
-		width: 20px;
-		height: 20px;
-		border: solid 1px;
-		background: black;
-		color: white;
-		display: inline-block;
-		cursor: pointer;
+		width: 100px;
+	    padding: 10px;
+	    text-align: center;
+	    border: solid 1px;
+	    display: inline-block;
+	    cursor: pointer;
+	    border-radius: 5px;
+	    box-shadow: 0px 2px 1px;
+	}
+
+	.btn:hover{
+		background: #aaa;
+	}
+
+	.btn.small{
+		width: 0px;
+	    height: 0px;
+	    padding: 10px;
+	    margin: 5px;
 	}
 
 	#qtext{
 		font-size: 20px;
+		border: none;
+	    resize: none;
+	    border-bottom: solid 1px;
 	}
 	.qtext{
-		font-size: 20px;
+		font-size: 25px;
+		border-bottom: solid 1px;
+		margin-bottom: 15px;
+		padding: 5px;
 	}
 	#dummyslider{
 		width: 70%;
     	margin: 50px auto;
 	}
-	#custom-handle {
+	div[id^="custom-handle"]{
 		text-align: center;
 		font-size: 40px;
 	}
+	ul{
+		list-style: none;
+	}
 	li{
 		margin-bottom: 20px;
+		background: #eee;
+		width: 700px;
 	}
 
 	#surveyname{
 		font-size: 30px;
+	    border: none;
+	    padding: 0px 20px;
+	    border-bottom: 2px solid;
 	}
 
 	#formfooter{
@@ -177,6 +207,35 @@
 	    bottom: 10px;
 	    padding: 5px;
 	    color: white;
+	    text-align: center;
+	}
+
+	#qitem{
+		border: solid 1px;
+	    padding: 10px;
+	    border-radius: 5px;
+	    box-shadow: 0px 1px 1px;
+	}
+
+	#optitem{
+		display: block;
+		width: 100px;
+		padding: 5px;
+		margin: 5px;
+	}
+
+	#quesclose{
+		    font-size: 15px;
+	    border: solid 1px;
+	    padding: 2px 5px;
+	    border-radius: 2px;
+	    float: right;
+	    cursor: pointer;
+	}
+
+	#selqtype{
+		margin-left: 30px;
+    	font-size: 15px;
 	}
 </style>
 
@@ -243,28 +302,28 @@
 
 	}
 	function addradrow(ele){
-		jQuery(ele).parent().after("<div><input type='text' value='enter new option '/><div id='addradrow' class='addradrow btn' onclick=addradrow(this)>+</div><div id='delradrow' class='btn' onclick='delradrow(this)'>-</div></div>")
+		jQuery(ele).parent().after("<div><input type='text' value='enter new option '/><div id='addradrow' class='addradrow btn small' onclick=addradrow(this)>+</div><div id='delradrow' class='btn small' onclick='delradrow(this)'>-</div></div>")
 	}
 	function delradrow(ele){
 		jQuery(ele).parent().remove();
 	}
 	qctr = 0;
 	function appendQuestion(type){
-		elem = '<div class="qtext" id="q'+qctr+'" type="'+type+'">'+jQuery('#qtext').val()+'</div>'
+		elem = '<div class="qtext" id="q'+qctr+'" type="'+type+'">'+jQuery('#qtext').val()+'<span id="quesclose" onclick="removeques(this)">x</span></div>'
 		
 		if(type == 1){
 			select = '';
 			opts = jQuery('#radiooptionspace').find("input");
 			jQuery.each(opts, function(k, v){
-				select += '<input type="radio" name="r'+qctr+'" value="'+jQuery(v).val()+'">'+jQuery(v).val()+'</input>';
+				select += '<div id="optitem"><input type="radio" name="r'+qctr+'" value="'+jQuery(v).val()+'">'+jQuery(v).val()+'</input></div>';
 			});
 			elem += select;
-			jQuery('.questions').append('<li>'+elem+'</li>');
+			jQuery('.questions').append('<li id="qitem">'+elem+'</li>');
 		}else if(type == 2){
 			select = '<div id="slider'+qctr+'" style="width:50%;"></div>';
 			select += '<div id="custom-handle'+qctr+'" style="width:50%;"></div>';
 			elem += select;
-			jQuery('.questions').append('<li>'+elem+'</li>');
+			jQuery('.questions').append('<li id="qitem">'+elem+'</li>');
 			var handle = jQuery( "#custom-handle"+qctr );
 			jQuery("#slider"+qctr).slider({
 			      value:1,
@@ -281,18 +340,22 @@
 			select = '';
 			opts = jQuery('#multiplechoicespace').find("input");
 			jQuery.each(opts, function(k, v){
-				select += '<input type="checkbox" name="c'+qctr+'" value="'+jQuery(v).val()+'">'+jQuery(v).val()+'</input>';
+				select += '<div id="optitem"><input type="checkbox" name="c'+qctr+'" value="'+jQuery(v).val()+'">'+jQuery(v).val()+'</input></div>';
 			});
 			elem += select;
-			jQuery('.questions').append('<li>'+elem+'</li>');
+			jQuery('.questions').append('<li id="qitem">'+elem+'</li>');
 		}else if(type == 4){
 			select = '<textarea style="width:100%;" rows=4></textarea>';
 			elem += select;
-			jQuery('.questions').append('<li>'+elem+'</li>');
+			jQuery('.questions').append('<li id="qitem">'+elem+'</li>');
 		}
 		qctr+=1;
 		
 		jQuery(".questiondialog").hide();
+	}
+
+	function removeques(elem){
+		jQuery(elem).parent().parent().remove();
 	}
 	function closedialog(){
 		jQuery(".questiondialog").hide();
@@ -331,5 +394,7 @@
     	survey.name = name;
     	survey.questions = questions;
     	console.log(survey);
+
+    	jQuery.post('http://10.2.23.238:1337/surveys', {survey});
     }
 </script>

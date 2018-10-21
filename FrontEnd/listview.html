@@ -1,0 +1,51 @@
+<html>
+	<head>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	</head>
+	<body>
+		<div id="surveylistview"></div>
+	</body>
+
+	<div style="display:none" id="surveylistitem" onclick="viewsurvey(this)" sid="0">
+		Name:<span id="sname"></span>
+		Created At:<span id="cby"></span>
+		<span style="display: hidden;" id="sid"></span>
+	</div>
+</html>
+
+<script type="text/javascript">
+	jQuery.get('http://10.2.23.238:1337/surveys', function(data){
+		console.log(data);
+		jQuery.each(data, function(k, v){
+			var clonedDiv = jQuery('#surveylistitem').clone();
+			clonedDiv.css("display", "block");
+			clonedDiv.find("#sname").text(v.name);
+			clonedDiv.find("#cby").text(v.createdAt);
+			jQuery("#surveylistview").append(clonedDiv);
+		});
+	});
+
+	function viewsurvey(elem){
+		sid = jQuery(elem).find("#sid").text();
+		jQuery.get('http://10.2.23.238:1337/surveys/'+sid, function(data){
+			
+		});
+	}
+</script>
+<style type="text/css">
+	#surveylistview{
+
+	}
+	#surveylistitem{
+		border: solid 1px;
+		padding: 5px;
+		margin-bottom: 2px;
+	}
+	#surveylistitem:hover{
+		border: solid 1px;
+		padding: 5px;
+		background: #aaa;
+		transition: background 0.2s;
+		cursor: pointer;
+	}
+</style>
