@@ -50,8 +50,9 @@
 			console.log(data);
 			var sliders = [];
 			data = data[0];
-			jQuery("#surveyDetailsView").append('<div id="stitle"></div>');
+			jQuery("#surveyDetailsView").append('<div id="stitle"></div><div id="slink"></div>');
 			jQuery("#stitle").text(data.name);
+			jQuery("#slink").html("You can take the survey at <a href='./takesurvey.html?sid="+sid+"'>this link.</a>");
 			qstring = "<ol>";
 			jQuery.each(data.questions, function(k, v){
 				qstring += '<li>'
@@ -103,8 +104,8 @@
 	    mywindow.document.close(); // necessary for IE >= 10
 	    mywindow.focus(); // necessary for IE >= 10*/
 	    setTimeout(function(){
-	    	//mywindow.print();
-	    	//mywindow.close();
+	    	mywindow.print();
+	    	mywindow.close();
 	    }, 100);
 	    return true;
 	}
@@ -199,6 +200,9 @@
 	    cursor: pointer;
 	    top: -36px;
 	    text-decoration: underline;
+	}
+	#slink{
+		text-align: center;
 	}
 	li{
 		margin-bottom: 50px;

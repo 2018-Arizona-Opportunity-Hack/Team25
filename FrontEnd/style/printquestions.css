@@ -3,6 +3,10 @@ body{
 	font-family: monospace;
 }
 
+#slink{
+	display: none;
+}
+
 #stitle{
 	font-size: 30px;
     text-align: center;
