@@ -1,0 +1,206 @@
+<html>
+	<head>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css">
+	</head>
+	<body>
+		<div>
+			<div>
+				<div id="surveylistview"><div class="navbar"><span style="font-size:20px;margin-right: 40px;">Survey List</span><div id="navbtn" onclick="openaddsurvey()">Add New Survey</div></div></div>
+			</div>
+			
+			<div id="surveyDetailsView">
+				<center><h1>Click on a survey to see its details</h1></center>
+			</div>
+		</div>
+		
+	</body>
+
+	<div style="display:none" id="surveylistitem" onclick="viewsurvey(this)">
+		<table>
+		<tr><td>Name:</td><td><b><span id="sname"></span></b></td></tr>
+		<tr><td>Created At:</td><td><b><span id="cby"></span></b></td></tr>
+		</table>
+		<div id="btncategory">
+			<div onclick=deletesurvey(this)>delete</div><div onclick=PrintElem('surveyDetailsView')>print</div>
+		<div>
+		<span style="display: none;" id="sid"></span>
+	</div>
+</html>
+
+<script type="text/javascript">
+	jQuery.get('http://10.2.23.238:1337/surveys', function(data){
+		console.log(data);
+		jQuery.each(data, function(k, v){
+			var clonedDiv = jQuery('#surveylistitem').clone();
+			clonedDiv.css("display", "block");
+			clonedDiv.find("#sname").text(v.name);
+			clonedDiv.find("#cby").text(v.createdAt);
+			clonedDiv.find("#sid").text(v.id);
+			jQuery("#surveylistview").append(clonedDiv);
+		});
+	});
+
+	function viewsurvey(elem){
+		jQuery("#surveyDetailsView").text("");
+		console.log(elem);
+		sid = jQuery(elem).find("#sid").text();
+		jQuery.get('http://10.2.23.238:1337/surveys/'+sid, function(data){
+			console.log(data);
+			var sliders = [];
+			data = data[0];
+			jQuery("#surveyDetailsView").append('<div id="stitle"></div>');
+			jQuery("#stitle").text(data.name);
+			qstring = "<ol>";
+			jQuery.each(data.questions, function(k, v){
+				qstring += '<li>'
+				+'<div id="qitem">'
+				+'<div id="qtext">'+v.text+'</div>'
+				+'<div id="qopts">'
+				if(v.type == 1){
+					jQuery.each(v.options, function(l, u){
+						qstring += '<div><input type="radio" name="r'+k+'">'+u.text+'</input></div>';
+					});
+				}else if(v.type == 2){
+					qstring += '<div id="slider'+k+'" style="width:50%;margin:auto;"></div>';
+					sliders.push(k);
+				}else if(v.type == 3){
+					jQuery.each(v.options, function(l, u){
+						qstring += '<div><input type="checkbox" name="c'+k+'">'+u.text+'</input></div>';
+					});
+				}else if(v.type == 4){
+					qstring += '<textarea id="qinput"></textarea>';
+				}
+				qstring += '</div>'
+				+'</div>'
+				+'</li>'
+			});
+			qstring += '</ol>';
+			jQuery('#surveyDetailsView').append(qstring);
+
+			jQuery.each(sliders, function(k,v){
+				jQuery("#slider"+v).slider({
+			      value:1,
+			      min: 0,
+			      max: 10,
+			      step: 1,});
+			});
+		});
+	}
+
+
+	function PrintElem(elem){
+	    var mywindow = window.open('', 'PRINT', 'height=400,width=600');
+
+	    mywindow.document.write('<html><head><title>' + document.title  + '</title>');
+	    mywindow.document.write('<link rel="stylesheet" type="text/css" href="./style/printquestions.css">');
+	    mywindow.document.write('</head><body >');
+	    mywindow.document.write('<h1>' + document.title  + '</h1>');
+	    mywindow.document.write(document.getElementById(elem).innerHTML);
+	    mywindow.document.write('</body></html>');
+
+	    mywindow.document.close(); // necessary for IE >= 10
+	    mywindow.focus(); // necessary for IE >= 10*/
+	    setTimeout(function(){
+	    	//mywindow.print();
+	    	//mywindow.close();
+	    }, 100);
+	    return true;
+	}
+
+	function deletesurvey(elem){
+
+		var id = jQuery(elem).parent().find("#sid").text();
+		jQuery.ajax({
+		    url: 'http://10.2.23.238:1337/surveys/'+id,
+		    type: 'DELETE',
+		    success: function(){
+		    	window.location.reload();
+		    }
+		  });
+		
+	}
+
+	function openaddsurvey(){
+		window.location.href = "./addnewsurvey.html";
+	}
+</script>
+<style type="text/css">
+	body{
+		margin: 0px;
+		font-family: monospace;
+	}
+	.navbar{
+		background: #bbb;
+		border-bottom: solid 1px;
+		padding: 10px 10px;
+	}
+	#surveylistview{
+		width: 30%;
+		padding:5px;
+		float: left;
+	}
+	#surveyDetailsView{
+		width: 68%;
+		padding: 5px;
+		float: left;
+	}
+	#surveylistitem{
+		border: solid 1px;
+		padding: 5px;
+		margin-bottom: 2px;
+	}
+	#surveylistitem:hover{
+		border: solid 1px;
+		padding: 5px;
+		background: #aaa;
+		transition: background 0.2s;
+		cursor: pointer;
+	}
+
+	#stitle{
+		text-align: center;
+		font-size: 30px;
+    	border-bottom: 2px solid;
+	}
+
+	#navbtn{
+		width: 150px;
+	    padding: 10px;
+	    text-align: center;
+	    border: solid 1px;
+	    display: inline-block;
+	    cursor: pointer;
+	    border-radius: 5px;
+	    box-shadow: 0px 2px 1px;
+	}
+	#qtext{
+		font-size: 20px;
+		font-weight: 100;
+		margin: 10px 0px;
+	}
+
+	#qopts div{
+		width: 200px;
+		display: inline-block;
+	}
+
+	#qinput{
+		font-size: 20px;
+		border: none;
+	    resize: none;
+	    border-bottom: solid 1px;
+	    width: 100%;
+	}
+	#btncategory{
+		float: right;
+		position: relative;
+	    cursor: pointer;
+	    top: -36px;
+	    text-decoration: underline;
+	}
+	li{
+		margin-bottom: 50px;
+	}
+</style>
